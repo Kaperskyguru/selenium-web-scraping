@@ -43,8 +43,8 @@ app.get('/lambdatest', async (request, response) => {
   }
 });
 
-const USERNAME = 'solomoneseme'; //replace with your username
-const KEY = '7gk91xabRCYfmrwWySH9FHTMa8AOpSw4D6Sn2EyxGCvsxbpF9U'; //replace with your accesskey
+const USERNAME = ''; //replace with your username
+const KEY = ''; //replace with your accesskey
 
 const GRID_HOST = 'hub.lambdatest.com/wd/hub';
 
