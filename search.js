@@ -16,37 +16,10 @@ app.get('/search', async (request, response) => {
   }
 });
 
-app.get('/local', async (request, response) => {
-  try {
-    const data = await GoogleSearchLocalTest();
-    response.status(200).json(data);
-  } catch (error) {
-    console.log(error);
-    response.status(500).json({
-      message: 'Server error occurred',
-    });
-  }
-});
-
 const USERNAME = ''; //replace with your username
 const KEY = ''; //replace with your accesskey
 
 const GRID_HOST = 'hub.lambdatest.com/wd/hub';
-
-async function GoogleSearchLocalTest() {
-  try {
-    driver = await new Builder().forBrowser('chrome').build();
-    await driver.get('https://www.google.com/search?q=lambdatest');
-
-    const titles = await driver.findElements(By.name('h3'));
-    return await getFirstTitle(titles);
-  } catch (error) {
-    console.log(error);
-    throw new Error(error);
-  } finally {
-    await driver.quit();
-  }
-}
 
 const searchCapabilities = {
   build: 'JavaScript and Selenium Web Testing',
@@ -70,10 +43,10 @@ async function GoogleSearchWithLambdaTest() {
 
     await driver.get('https://www.google.com/search?q=lambdatest');
 
-    const titles = await driver.findElements(By.name('h3'));
+    const titles = await driver.findElements(By.id('rso'));
+
     return await getFirstTitle(titles);
   } catch (error) {
-    console.log(error);
     throw new Error(error);
   } finally {
     await driver.quit();
@@ -85,7 +58,13 @@ async function getFirstTitle(titles) {
 
   try {
     for (const title of titles) {
-      const text = await title.findElement(By.name('h3')).getText();
+      const text = await title
+        .findElement(
+          By.xpath(
+            '//*[@id="rso"]/div[1]/div/div/div/div/div/div/div/div[1]/a/h3'
+          )
+        )
+        .getText();
       allTitles.push(text);
     }
   } catch (error) {
